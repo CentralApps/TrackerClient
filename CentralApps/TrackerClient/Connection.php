@@ -15,7 +15,17 @@ class Connection
 	
 	public function sendPayload($payload)
 	{
-		$payload = array( 'payload' => $payload );
+		$to_send = array();
+		foreach($payload as $data) {
+			$send = array();
+			$send['reference'] = $data->reference;
+			$send['object_type'] = $data->type;
+			$send['created'] = $data->created;
+			$send['removed'] = $data->removed;
+			$send['tags'] = implode(',',$data->tags);
+			$to_send[] = $send;
+		}
+		$payload = array( 'payload' => $to_send );
 		$payload['api_key'] = $this->apiKey;
 		$payload['account_id'] = $this->accountId;
 		
@@ -31,7 +41,15 @@ class Connection
   		$curl = curl_init();
   		curl_setopt_array( $curl, $curl_options );
   		$result = curl_exec( $curl );
-
+		$err = curl_errno ( $curl );
+      	$errmsg = curl_error ( $curl );
+      	$header = curl_getinfo ( $curl );
+      	$http_code = curl_getinfo ( $curl, CURLINFO_HTTP_CODE );
  		curl_close( $curl );
+		if(200 == $http_code) {
+			return true;
+		} else {
+			throw new \Exception("Problem logging metrics");
+		}
 	}
 }
