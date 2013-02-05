@@ -23,11 +23,12 @@ class Client
 	
 	public function sendMetrics()
 	{
-		try {
-			$this->connection->sendPayload($this->metrics);
-		} catch(\Exception $e) {
-			//
+		if(count($this->metrics) > 0){
+			try {
+				$this->connection->sendPayload($this->metrics);
+			} catch(\Exception $e) {
+				//
+			}
 		}
-		
 	}
 }
