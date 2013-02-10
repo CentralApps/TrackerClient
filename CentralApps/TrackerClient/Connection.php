@@ -20,7 +20,7 @@ class Connection
 			$send = array();
 			$send['reference'] = $data->reference;
 			$send['object_type'] = $data->type;
-			$send['object_type_reference'] = $data->objectTypeReference;
+			$send['object_type_reference'] = $data->typeReference;
 			$send['created'] = $data->created;
 			$send['removed'] = $data->removed;
 			$send['tags'] = implode(',',$data->tags);
